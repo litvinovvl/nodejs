@@ -12,7 +12,7 @@ article.get('/', function(req, res, next) {
 article.get('/:id', viewOne);
 
 function viewOne(req, res, next) {
-    let tmp = store.find(article => article.id === Number(req.params.id));
+    let tmp = store.find(article => article.id == req.params.id);
     if(tmp) {
         res.json(tmp);
     } else {
@@ -25,7 +25,7 @@ function viewOne(req, res, next) {
 article.delete('/:id', deleteOne);
 
 function deleteOne(req, res, next) {
-    let i = store.indexOf(store.find(article => article.id === Number(req.params.id)));
+    let i = store.indexOf(store.find(article => article.id == req.params.id));
     if(i !== -1) {
         store.splice(i, 1);
         res.status(200);
@@ -54,7 +54,7 @@ function postOne(req, res, next) {
 article.put('/:id', checkOne, putOneAccept);
 
 function checkOne(req, res, next) {
-    if(store.indexOf(store.find(article => article.id === Number(req.params.id))) !== -1) {
+    if(store.indexOf(store.find(article => article.id == req.params.id)) !== -1) {
         next()
     } else {
         next(createError(404));
@@ -62,7 +62,7 @@ function checkOne(req, res, next) {
 }
 
 function putOneAccept(req, res, next) {
-    let i = store.indexOf(store.find(article => article.id === Number(req.params.id)));
+    let i = store.indexOf(store.find(article => article.id == req.params.id));
     if (req.body instanceof Object && req.body.hasOwnProperty('id') && req.body.hasOwnProperty('userId') && req.body.hasOwnProperty('title') && req.body.hasOwnProperty('body')) {
         store[i] = { ...req.body, id: Number(req.body.id), userId: Number(req.body.userId) };
         res.send(store[i]);
@@ -78,7 +78,7 @@ article.patch('/:id', checkOne, patchOneAccept);
 function patchOneAccept(req, res, next) {
     let i = store.indexOf(store.find(article => article.id === Number(req.params.id)));
     if(req.body instanceof Object){
-        store[i] = { ...store[i], ...req.body,  userId: store[i].userId};
+        store[i] = { ...store[i], ...req.body };
         res.send(store[i]);
     } else {
         next(createError(422));
