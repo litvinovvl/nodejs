@@ -43,7 +43,7 @@ function postOne(req, res, next) {
     if (req.body instanceof Object && req.body.hasOwnProperty('userId') && req.body.hasOwnProperty('title') && req.body.hasOwnProperty('body')) {
         let tmp = { ...req.body, id: Date.now() };
         store.push(tmp);
-        res.send(store[store.length - 1]);
+        res.json(store[store.length - 1]);
     } else {
         next(createError(422));
     }
@@ -65,7 +65,7 @@ function putOneAccept(req, res, next) {
     let i = store.indexOf(store.find(article => article.id == req.params.id));
     if (req.body instanceof Object && req.body.hasOwnProperty('id') && req.body.hasOwnProperty('userId') && req.body.hasOwnProperty('title') && req.body.hasOwnProperty('body')) {
         store[i] = { ...req.body, id: Number(req.body.id), userId: Number(req.body.userId) };
-        res.send(store[i]);
+        res.json(store[i]);
     } else {
         next(createError(422));
     }
@@ -79,7 +79,7 @@ function patchOneAccept(req, res, next) {
     let i = store.indexOf(store.find(article => article.id === Number(req.params.id)));
     if(req.body instanceof Object){
         store[i] = { ...store[i], ...req.body };
-        res.send(store[i]);
+        res.json(store[i]);
     } else {
         next(createError(422));
     }
